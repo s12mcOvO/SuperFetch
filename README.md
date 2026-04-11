@@ -207,7 +207,7 @@ superfetch update-models
 
 ```bash
 # Clone repository | 克隆仓库
-git clone https://github.com/OpenLight-Studio/SuperFetch.git
+git clone https://github.com/s12mcOvO/SuperFetch.git
 cd SuperFetch
 
 # Build kernel modules | 构建内核模块
@@ -271,9 +271,9 @@ This project is licensed under the GNU General Public License v3.0. See [LICENSE
 
 ## 📞 Support | 支持
 
-- **Documentation**: https://docs.brights.org/superfetch
-- **Issues**: https://github.com/OpenLight-Studio/SuperFetch/issues
-- **Discussions**: https://github.com/OpenLight-Studio/SuperFetch/discussions
+- **Documentation**: https://github.com/s12mcOvO/SuperFetch#readme
+- **Issues**: https://github.com/s12mcOvO/SuperFetch/issues
+- **Discussions**: https://github.com/s12mcOvO/SuperFetch/discussions
 
 ---
 

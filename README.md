@@ -1,45 +1,48 @@
-# SuperFetch - BrightS System Optimizer
+# SuperFetch - System Information Tool
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
-SuperFetch is an intelligent system optimization and prefetching tool for the BrightS operating system. It improves system performance through smart caching, prefetching algorithms, and memory optimization.
+SuperFetch is a fast, highly customizable system information tool written in C. Inspired by fastfetch, it displays system information in a beautiful, terminal-based interface with support for various themes and modules.
 
 ## ✨ Features | 特性
 
-### 🚀 Performance Optimization | 性能优化
-- **Intelligent Prefetching**: Learns usage patterns and preloads frequently used applications
-- **Smart Caching**: Optimizes disk and memory caching for better performance
-- **Memory Management**: Intelligent memory allocation and cleanup
-- **I/O Optimization**: Reduces disk access latency through predictive loading
+### 🚀 Fast & Lightweight | 快速轻量
+- **Blazing Fast**: Optimized C code for minimal startup time
+- **Low Memory Usage**: Minimal resource consumption
+- **No Dependencies**: Standalone binary with no external requirements
+- **Cross-Platform**: Support for multiple operating systems
 
-### 📊 System Monitoring | 系统监控
-- **Real-time Metrics**: Monitors system performance in real-time
-- **Resource Usage**: Tracks CPU, memory, and disk utilization
-- **Performance Analytics**: Provides insights into system bottlenecks
-- **Health Reports**: Generates system health and optimization reports
+### 🎨 Highly Customizable | 高度可定制
+- **Themes**: Built-in themes with color customization
+- **Modules**: Modular design for displaying different information
+- **ASCII Art**: Custom ASCII art and logos
+- **Layout Control**: Flexible positioning and formatting options
 
-### 🎯 Adaptive Learning | 自适应学习
-- **Usage Pattern Analysis**: Learns from user behavior and application usage
-- **Predictive Loading**: Anticipates user needs and preloads resources
-- **Dynamic Optimization**: Adjusts optimization strategies based on system load
-- **Machine Learning**: Uses algorithms to improve prediction accuracy
+### 📊 Comprehensive Information | 全面信息显示
+- **System Info**: OS, kernel, uptime, packages
+- **Hardware**: CPU, GPU, memory, disk, network
+- **Software**: Desktop environment, window manager, shell
+- **Colors**: Terminal color palette display
 
 ## 🏗️ Architecture | 架构
 
 ```
 SuperFetch/
-├── core/              # Core prefetching engine | 核心预取引擎
-│   ├── predictor/     # Prediction algorithms | 预测算法
-│   ├── cache/         # Caching mechanisms | 缓存机制
-│   └── monitor/       # System monitoring | 系统监控
-├── drivers/           # Kernel drivers | 内核驱动
-│   ├── prefetch.ko    # Prefetch driver | 预取驱动
-│   └── cache.ko       # Cache driver | 缓存驱动
-├── tools/             # User tools | 用户工具
-│   ├── superfetch     # Main control tool | 主控制工具
-│   ├── sf-analyze     # Analysis tool | 分析工具
-│   └── sf-report      # Report generator | 报告生成器
+├── src/               # Source code | 源代码
+│   ├── main.c         # Main entry point | 主入口
+│   ├── modules/       # Information modules | 信息模块
+│   │   ├── cpu.c      # CPU information | CPU信息
+│   │   ├── memory.c   # Memory information | 内存信息
+│   │   ├── disk.c     # Disk information | 磁盘信息
+│   │   ├── os.c       # OS information | 操作系统信息
+│   │   └── gpu.c      # GPU information | GPU信息
+│   ├── themes/        # Built-in themes | 内置主题
+│   ├── ascii/         # ASCII art | ASCII艺术
+│   └── utils/         # Utility functions | 工具函数
 ├── config/            # Configuration files | 配置文件
+│   ├── config.json    # Default configuration | 默认配置
+│   └── themes/        # User themes | 用户主题
+├── presets/           # Configuration presets | 配置预设
 └── docs/              # Documentation | 文档
 ```
 
@@ -52,10 +55,26 @@ SuperFetch/
 bspm install superfetch
 
 # Or build from source | 或从源码构建
-git clone https://github.com/OpenLight-Studio/SuperFetch.git
+git clone https://github.com/s12mcOvO/SuperFetch.git
 cd SuperFetch
 make
 sudo make install
+```
+
+### Basic Usage | 基本使用
+
+```bash
+# Display system information | 显示系统信息
+superfetch
+
+# Use a specific theme | 使用特定主题
+superfetch --theme neon
+
+# Display only CPU and memory info | 仅显示CPU和内存信息
+superfetch --cpu --memory
+
+# Custom ASCII art | 自定义ASCII艺术
+superfetch --ascii ~/my-ascii.txt
 ```
 
 ### Basic Usage | 基本使用
@@ -94,99 +113,103 @@ sf-report
 
 ## 🔧 Configuration | 配置
 
-### Main Configuration | 主要配置
+### Configuration File | 配置文件
 
-```ini
-# /etc/superfetch/superfetch.conf
-[general]
-enabled = true
-log_level = info
-cache_size = 512MB
-
-[prefetch]
-enabled = true
-max_predictions = 100
-learning_rate = 0.1
-
-[cache]
-enabled = true
-strategy = lru
-max_age = 3600
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/s12mcOvO/SuperFetch/main/config/config.schema.json",
+  "display": {
+    "color": "blue",
+    "separator": " → "
+  },
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "resolution",
+    "de",
+    "wm",
+    "wm_theme",
+    "theme",
+    "icons",
+    "font",
+    "cursor",
+    "terminal",
+    "terminal_font",
+    "cpu",
+    "gpu",
+    "memory",
+    "swap",
+    "disk",
+    "battery",
+    "locale",
+    "break",
+    "colors"
+  ]
+}
 ```
 
-### Advanced Tuning | 高级调优
+### Command Line Options | 命令行选项
 
 ```bash
-# Adjust prefetch aggressiveness | 调整预取激进度
-superfetch config prefetch.aggressiveness 0.8
+# Display help | 显示帮助
+superfetch --help
 
-# Set cache size | 设置缓存大小
-superfetch config cache.size 1GB
+# Use a specific config file | 使用特定配置文件
+superfetch --config ~/.config/superfetch/config.json
 
-# Enable/disable specific features | 启用/禁用特定功能
-superfetch enable memory-optimization
-superfetch disable disk-prefetch
+# Disable colors | 禁用颜色
+superfetch --no-color
+
+# Set logo | 设置logo
+superfetch --logo arch
+
+# Custom structure | 自定义结构
+superfetch --structure Title:OS:Kernel:CPU
 ```
 
-## 📊 Monitoring | 监控
+## 🎨 Themes & Customization | 主题与定制
 
-### Real-time Metrics | 实时指标
+### Built-in Themes | 内置主题
 
 ```bash
-# System overview | 系统概览
-superfetch metrics
+# List available themes | 列出可用主题
+superfetch --list-themes
 
-# Detailed breakdown | 详细分解
-superfetch metrics --detailed
-
-# Historical data | 历史数据
-superfetch metrics --history 24h
+# Use a theme | 使用主题
+superfetch --theme cyberpunk
+superfetch --theme minimal
+superfetch --theme rainbow
 ```
 
-### Performance Reports | 性能报告
+### Custom ASCII Art | 自定义ASCII艺术
 
 ```bash
-# Generate full report | 生成完整报告
-sf-report --full > system_report.txt
+# Use built-in logos | 使用内置logo
+superfetch --logo arch
+superfetch --logo debian
+superfetch --logo ubuntu
 
-# Boot time analysis | 引导时间分析
-sf-analyze boot
+# Use custom ASCII file | 使用自定义ASCII文件
+superfetch --ascii ~/my-logo.txt
 
-# Application startup analysis | 应用程序启动分析
-sf-analyze app firefox
+# Use image (if supported) | 使用图片（如果支持）
+superfetch --logo ~/logo.png
 ```
 
-## 🎯 Optimization Strategies | 优化策略
+### Module Configuration | 模块配置
 
-### Boot Optimization | 引导优化
-- Preloads critical system components
-- Optimizes init process order
-- Reduces kernel initialization time
+SuperFetch supports various information modules:
 
-### Application Optimization | 应用程序优化
-- Learns application startup patterns
-- Preloads dependencies and libraries
-- Optimizes memory layout
-
-### System Optimization | 系统优化
-- Manages background processes
-- Optimizes I/O scheduling
-- Balances CPU and memory usage
-
-## 🔍 Analysis Tools | 分析工具
-
-### Usage Analysis | 使用分析
-
-```bash
-# Analyze application usage | 分析应用程序使用情况
-sf-analyze usage firefox
-
-# System resource trends | 系统资源趋势
-sf-analyze trends --period 7d
-
-# Performance bottlenecks | 性能瓶颈
-sf-analyze bottlenecks
-```
+- **System**: OS, kernel, uptime, packages
+- **Hardware**: CPU, GPU, memory, disk, battery
+- **Software**: Desktop environment, window manager, theme
+- **Terminal**: Colors, font, cursor, terminal emulator
+- **Display**: Resolution, refresh rate
 
 ### Predictive Modeling | 预测建模
 
@@ -252,22 +275,24 @@ This project is licensed under the GNU General Public License v3.0. See [LICENSE
 ## 🌟 Roadmap | 路线图
 
 ### Version 1.0 (Current) | 版本1.0（当前）
-- ✅ Basic prefetching engine
-- ✅ System monitoring
-- ✅ Cache management
-- ✅ User tools
+- ✅ Basic system information display
+- ✅ Modular architecture
+- ✅ Theme support
+- ✅ Custom ASCII art
+- ✅ Cross-platform compatibility
 
 ### Version 2.0 (Planned) | 版本2.0（计划）
-- 🔄 Machine learning integration
-- 🔄 Advanced prediction algorithms
-- 🔄 Cloud synchronization
-- 🔄 Mobile device support
+- 🔄 Image logo support
+- 🔄 More information modules
+- 🔄 Plugin system
+- 🔄 Configuration GUI
+- 🔄 Windows/macOS support
 
 ### Future Versions | 未来版本
-- 🤖 AI-powered optimization
-- 🌐 Distributed caching
-- 📱 Cross-platform support
-- 🔮 Predictive maintenance
+- 🤖 AI-generated ASCII art
+- 🌐 Web-based configuration
+- 📱 Mobile device detection
+- 🔮 Hardware stress testing integration
 
 ## 📞 Support | 支持
 
@@ -277,4 +302,4 @@ This project is licensed under the GNU General Public License v3.0. See [LICENSE
 
 ---
 
-**SuperFetch** - Intelligent system optimization for BrightS OS ⚡
+**SuperFetch** - Fast and beautiful system information tool ⚡

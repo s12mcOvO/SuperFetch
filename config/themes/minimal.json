@@ -1,0 +1,13 @@
+{
+  "name": "minimal",
+  "display": {
+    "color": "white",
+    "separator": ": "
+  },
+  "modules": [
+    "os",
+    "kernel",
+    "cpu",
+    "memory"
+  ]
+}

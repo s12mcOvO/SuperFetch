@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/s12mcOvO/SuperFetch/main/config/config.schema.json",
+  "display": {
+    "color": "blue",
+    "separator": " → "
+  },
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "resolution",
+    "de",
+    "wm",
+    "terminal",
+    "cpu",
+    "memory",
+    "disk",
+    "break",
+    "colors"
+  ]
+}

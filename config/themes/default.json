@@ -1,0 +1,25 @@
+{
+  "name": "default",
+  "display": {
+    "color": "blue",
+    "separator": " → "
+  },
+  "modules": [
+    "title",
+    "separator",
+    "os",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "resolution",
+    "de",
+    "wm",
+    "terminal",
+    "cpu",
+    "memory",
+    "disk",
+    "break",
+    "colors"
+  ]
+}

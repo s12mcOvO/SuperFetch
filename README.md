@@ -50,16 +50,38 @@ SuperFetch/
 
 ### Installation | 安装
 
-```bash
-# Install SuperFetch | 安装SuperFetch
-bspm install superfetch
+#### From Package Manager | 通过包管理器
 
-# Or build from source | 或从源码构建
+```bash
+# Install SuperFetch using BSPM | 使用BSPM安装SuperFetch
+bspm update
+bspm install superfetch
+```
+
+#### Build from Source | 从源码构建
+
+```bash
+# Clone the repository | 克隆仓库
 git clone https://github.com/s12mcOvO/SuperFetch.git
 cd SuperFetch
+
+# Build | 构建
 make
+
+# Install (optional) | 安装（可选）
 sudo make install
+
+# Or run directly | 或直接运行
+./superfetch
 ```
+
+#### Dependencies | 依赖项
+
+- **C Compiler**: GCC or Clang
+- **Make**: Build system
+- **Standard C Library**: glibc or similar
+
+No external libraries required! | 无需外部库依赖！
 
 ### Basic Usage | 基本使用
 
@@ -67,14 +89,50 @@ sudo make install
 # Display system information | 显示系统信息
 superfetch
 
-# Use a specific theme | 使用特定主题
-superfetch --theme neon
+# Show version | 显示版本
+superfetch --version
 
-# Display only CPU and memory info | 仅显示CPU和内存信息
-superfetch --cpu --memory
+# Show help | 显示帮助
+superfetch --help
+
+# Disable colors | 禁用颜色
+superfetch --no-color
 
 # Custom ASCII art | 自定义ASCII艺术
 superfetch --ascii ~/my-ascii.txt
+```
+
+### Example Output | 示例输出
+
+```bash
+./superfetch
+```
+
+```
+██████╗ ██████╗ ██╗ ██████╗ ██╗  ██╗████████╗███████╗
+██╔══██╗██╔══██╗██║██╔════╝ ██║  ██║╚══██╔══╝██╔════╝
+██████╔╝██████╔╝██║██║  ███╗███████║   ██║   ███████╗
+██╔══██╗██╔══██╗██║██║   ██║██╔══██║   ██║   ╚════██║
+██████╔╝██║  ██║██║╚██████╔╝██║  ██║   ██║   ███████║
+╚═════╝ ╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+
+user@bright-pc
+─────────────
+OS: BrightS Linux
+Kernel: BrightS Kernel 0.1.2.2
+Uptime: Unknown
+Packages: Unknown (bspm)
+Shell: BrightS Shell
+Resolution: 1920x1080
+DE: BrightS Desktop
+WM: BrightS Window Manager
+Terminal: BrightS Terminal
+CPU: BrightS CPU @ 2.0GHz
+Memory: 512 MB / 1024 MB
+Disk: 10 GB / 50 GB
+
+Colors: ███ ███ ███ ███ ███ ███ ███ ███
+        ███ ███ ███ ███ ███ ███ ███ ███
 ```
 
 ### Basic Usage | 基本使用
@@ -115,6 +173,8 @@ sf-report
 
 ### Configuration File | 配置文件
 
+Create `~/.config/superfetch/config.json`:
+
 ```json
 {
   "$schema": "https://raw.githubusercontent.com/s12mcOvO/SuperFetch/main/config/config.schema.json",
@@ -133,25 +193,40 @@ sf-report
     "resolution",
     "de",
     "wm",
-    "wm_theme",
-    "theme",
-    "icons",
-    "font",
-    "cursor",
     "terminal",
-    "terminal_font",
     "cpu",
-    "gpu",
     "memory",
-    "swap",
     "disk",
-    "battery",
-    "locale",
     "break",
     "colors"
   ]
 }
 ```
+
+### Available Modules | 可用模块
+
+| Module | Description | Status |
+|--------|-------------|--------|
+| `title` | Username and hostname | ✅ |
+| `separator` | Visual separator | ✅ |
+| `os` | Operating system info | ✅ |
+| `kernel` | Kernel version | ✅ |
+| `uptime` | System uptime | ✅ |
+| `packages` | Package count | ✅ |
+| `shell` | Current shell | ✅ |
+| `resolution` | Display resolution | ✅ |
+| `de` | Desktop environment | ✅ |
+| `wm` | Window manager | ✅ |
+| `terminal` | Terminal emulator | ✅ |
+| `cpu` | CPU information | ✅ |
+| `gpu` | GPU information | 🚧 |
+| `memory` | RAM usage | ✅ |
+| `swap` | Swap usage | 🚧 |
+| `disk` | Disk usage | ✅ |
+| `battery` | Battery status | 🚧 |
+| `locale` | System locale | 🚧 |
+| `break` | Line break | ✅ |
+| `colors` | Color palette | ✅ |
 
 ### Command Line Options | 命令行选项
 

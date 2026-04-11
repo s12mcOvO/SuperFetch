@@ -1,6 +1,6 @@
 # SuperFetch - System Information Tool
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](LICENSE)
 
 SuperFetch is a fast, highly customizable system information tool written in C. Inspired by fastfetch, it displays system information in a beautiful, terminal-based interface with support for various themes and modules.
 

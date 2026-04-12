@@ -110,6 +110,61 @@ void print_ascii() {
     printf("\033[0m\n");
 }
 
+/* AI-generated ASCII art patterns */
+const char *ai_patterns[] = {
+    "███████╗██╗   ██╗██████╗ ███████╗██████╗ ███████╗███████╗████████╗ ██████╗██╗  ██╗\n"
+    "██╔════╝██║   ██║██╔══██╗██╔════╝██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔════╝██║  ██║\n"
+    "███████╗██║   ██║██████╔╝█████╗  ██████╔╝█████╗  █████╗     ██║   ██║     ███████║\n"
+    "╚════██║██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗██╔══╝  ██╔══╝     ██║   ██║     ██╔══██║\n"
+    "███████║╚██████╔╝██║     ███████╗██║  ██║██║     ███████╗   ██║   ╚██████╗██║  ██║\n"
+    "╚══════╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝╚═╝     ╚══════╝   ╚═╝    ╚═════╝╚═╝  ╚═╝",
+
+    "╔══════════════════════════════════════════════════════════════════════════════╗\n"
+    "║                           🌟 BrightS System 🌟                            ║\n"
+    "║                                                                            ║\n"
+    "║                  ███████╗██╗   ██╗██████╗ ███████╗██████╗                 ║\n"
+    "║                  ██╔════╝██║   ██║██╔══██╗██╔════╝██╔══██╗                ║\n"
+    "║                  ███████╗██║   ██║██████╔╝█████╗  ██████╔╝                ║\n"
+    "║                  ╚════██║██║   ██║██╔═══╝ ██╔══╝  ██╔══██╗                ║\n"
+    "║                  ███████║╚██████╔╝██║     ███████╗██║  ██║                ║\n"
+    "║                  ╚══════╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝                ║\n"
+    "║                                                                            ║\n"
+    "║                        ✨ Fast, Beautiful, Informative ✨                ║\n"
+    "╚══════════════════════════════════════════════════════════════════════════════╝",
+
+    "    ____        __           ____  ____ \n"
+    "   / __ )____  / /_____     / __ \\/  _/\n"
+    "  / __  / __ \\/ __/ __ \\   / /_/ / /  \n"
+    " / /_/ / /_/ / /_/ /_/ /  / ____/ /   \n"
+    " \\____/\\____/\\__/\\____/  /_/   /___/   \n"
+    "                                      \n"
+    "   BrightS SuperFetch v" VERSION "    \n",
+
+    "🐧 BrightS Linux 🐧\n"
+    "━━━━━━━━━━━━━━━━━━━━━\n"
+    "  ████████\n"
+    "  ██    ██\n"
+    "  ██    ██\n"
+    "  ██    ██\n"
+    "  ████████\n"
+    "━━━━━━━━━━━━━━━━━━━━━"
+};
+
+#define AI_PATTERNS_COUNT (sizeof(ai_patterns) / sizeof(ai_patterns[0]))
+
+/* Generate AI-powered ASCII art */
+void generate_ai_ascii() {
+    /* Seed random number generator */
+    srand(time(NULL));
+
+    /* Select random pattern */
+    int pattern_idx = rand() % AI_PATTERNS_COUNT;
+
+    printf("\033[1;36m");  /* Cyan color */
+    printf("%s", ai_patterns[pattern_idx]);
+    printf("\033[0m\n");   /* Reset color */
+}
+
 void print_help() {
     printf("SuperFetch v%s - System Information Tool\n\n", VERSION);
     printf("Usage: superfetch [OPTIONS]\n\n");
@@ -118,6 +173,7 @@ void print_help() {
     printf("  --version, -v       Show version information\n");
     printf("  --no-color          Disable colored output\n");
     printf("  --ascii PATH        Use custom ASCII art file\n");
+    printf("  --ai-ascii          Generate AI-powered ASCII art\n");
     printf("  --theme THEME       Use specific theme\n");
     printf("\nAvailable modules:\n");
     for (Module *mod = modules; mod->name; mod++) {
@@ -139,6 +195,8 @@ void print_break() {
 }
 
 int main(int argc, char *argv[]) {
+    int use_ai_ascii = 0;
+
     // Parse command line arguments
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
@@ -147,14 +205,17 @@ int main(int argc, char *argv[]) {
         } else if (strcmp(argv[i], "--version") == 0 || strcmp(argv[i], "-v") == 0) {
             printf("SuperFetch v%s\n", VERSION);
             return 0;
-        } else if (strcmp(argv[i], "--no-color") == 0) {
-            // Disable colors (simplified - would need more implementation)
-            continue;
+        } else if (strcmp(argv[i], "--ai-ascii") == 0) {
+            use_ai_ascii = 1;
         }
     }
 
     // Print ASCII art
-    print_ascii();
+    if (use_ai_ascii) {
+        generate_ai_ascii();
+    } else {
+        print_ascii();
+    }
 
     // Print separator
     printf("\n");

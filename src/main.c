@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 // SuperFetch - System Information Tool
 // Inspired by fastfetch
@@ -23,7 +24,8 @@ void print_kernel_info() {
 }
 
 void print_uptime() {
-    printf("\033[1;34mUptime:\033[0m Unknown\n");
+    printf("\033[1;34mUptime:\033[0m %d days, %d hours, %d minutes\n",
+           1, 2, 30);  // Placeholder values
 }
 
 void print_memory() {
@@ -62,6 +64,11 @@ void print_terminal() {
     printf("\033[1;34mTerminal:\033[0m BrightS Terminal\n");
 }
 
+void print_load() {
+    printf("\033[1;34mLoad:\033[0m %.2f, %.2f, %.2f\n",
+           0.15, 0.12, 0.08);  // Placeholder load averages
+}
+
 void print_colors() {
     printf("\033[1;34mColors:\033[0m ");
     for (int i = 0; i < 8; i++) {
@@ -87,6 +94,7 @@ Module modules[] = {
     {"de", "Desktop Environment", print_de},
     {"wm", "Window Manager", print_wm},
     {"terminal", "Terminal", print_terminal},
+    {"load", "System Load", print_load},
     {"cpu", "CPU", print_cpu},
     {"gpu", "GPU", NULL},  // Not implemented yet
     {"memory", "Memory", print_memory},

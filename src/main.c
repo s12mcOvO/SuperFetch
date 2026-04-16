@@ -1,11 +1,10 @@
+#define _POSIX_C_SOURCE 200112L
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
-
-// SuperFetch - System Information Tool
-// Inspired by fastfetch
 
 #define VERSION "1.0.0"
 
@@ -15,111 +14,64 @@ typedef struct {
     void (*func)(void);
 } Module;
 
-void print_os_info() {
-    printf("\033[1;34mOS:\033[0m BrightS Linux\n");
+static int no_color = 0;
+#define C_RESET   no_color ? "" : "\033[0m"
+#define C_BOLD    no_color ? "" : "\033[1;34m"
+
+static void print_field(const char *label, const char *value) {
+    printf("%s%s:%s %s\n", C_BOLD, label, C_RESET, value);
 }
 
-void print_kernel_info() {
-    printf("\033[1;34mKernel:\033[0m BrightS Kernel 0.1.2.2\n");
-}
+void print_os_info();
+void print_kernel_info();
+void print_uptime();
+void print_memory();
+void print_cpu();
+void print_disk();
+void print_packages();
+void print_shell();
+void print_resolution();
+void print_de();
+void print_wm();
+void print_terminal();
+void print_load();
+void print_swap();
+void print_battery();
+void print_locale();
+void print_hostname();
 
-void print_uptime() {
-    printf("\033[1;34mUptime:\033[0m %d days, %d hours, %d minutes\n",
-           1, 2, 30);  // Placeholder values
-}
-
-void print_memory() {
-    printf("\033[1;34mMemory:\033[0m 512 MB / 1024 MB\n");
-}
-
-void print_cpu() {
-    printf("\033[1;34mCPU:\033[0m BrightS CPU @ 2.0GHz\n");
-}
-
-void print_disk() {
-    printf("\033[1;34mDisk:\033[0m 10 GB / 50 GB\n");
-}
-
-void print_packages() {
-    printf("\033[1;34mPackages:\033[0m Unknown (bspm)\n");
-}
-
-void print_shell() {
-    printf("\033[1;34mShell:\033[0m BrightS Shell\n");
-}
-
-void print_resolution() {
-    printf("\033[1;34mResolution:\033[0m 1920x1080\n");
-}
-
-void print_de() {
-    printf("\033[1;34mDE:\033[0m BrightS Desktop\n");
-}
-
-void print_wm() {
-    printf("\033[1;34mWM:\033[0m BrightS Window Manager\n");
-}
-
-void print_terminal() {
-    printf("\033[1;34mTerminal:\033[0m BrightS Terminal\n");
-}
-
-void print_load() {
-    printf("\033[1;34mLoad:\033[0m %.2f, %.2f, %.2f\n",
-           0.15, 0.12, 0.08);  // Placeholder load averages
-}
-
-void print_colors() {
-    printf("\033[1;34mColors:\033[0m ");
-    for (int i = 0; i < 8; i++) {
-        printf("\033[4%dm   ", i);
-    }
-    printf("\033[0m\n");
-    printf("         ");
-    for (int i = 8; i < 16; i++) {
-        printf("\033[4%dm   ", i);
-    }
-    printf("\033[0m\n");
-}
+void print_ascii();
+void print_help();
+void print_title();
+void print_separator();
+void print_break();
+void generate_ai_ascii();
 
 Module modules[] = {
-    {"title", "Title", NULL},  // Special case
-    {"separator", "Separator", NULL},  // Special case
+    {"title", "Title", NULL},
+    {"separator", "Separator", NULL},
     {"os", "Operating System", print_os_info},
+    {"host", "Hostname", print_hostname},
     {"kernel", "Kernel", print_kernel_info},
     {"uptime", "Uptime", print_uptime},
-    {"packages", "Packages", print_packages},
     {"shell", "Shell", print_shell},
-    {"resolution", "Resolution", print_resolution},
     {"de", "Desktop Environment", print_de},
     {"wm", "Window Manager", print_wm},
     {"terminal", "Terminal", print_terminal},
-    {"load", "System Load", print_load},
     {"cpu", "CPU", print_cpu},
-    {"gpu", "GPU", NULL},  // Not implemented yet
     {"memory", "Memory", print_memory},
-    {"swap", "Swap", NULL},  // Not implemented yet
+    {"swap", "Swap", print_swap},
     {"disk", "Disk", print_disk},
-    {"battery", "Battery", NULL},  // Not implemented yet
-    {"locale", "Locale", NULL},  // Not implemented yet
-    {"break", "Break", NULL},  // Special case
-    {"colors", "Colors", print_colors},
+    {"load", "System Load", print_load},
+    {"packages", "Packages", print_packages},
+    {"battery", "Battery", print_battery},
+    {"locale", "Locale", print_locale},
+    {"break", "Break", NULL},
+    {"colors", "Colors", NULL},
     {NULL, NULL, NULL}
 };
 
-void print_ascii() {
-    printf("\033[1;34m");
-    printf("██████╗ ██████╗ ██╗ ██████╗ ██╗  ██╗████████╗███████╗\n");
-    printf("██╔══██╗██╔══██╗██║██╔════╝ ██║  ██║╚══██╔══╝██╔════╝\n");
-    printf("██████╔╝██████╔╝██║██║  ███╗███████║   ██║   ███████╗\n");
-    printf("██╔══██╗██╔══██╗██║██║   ██║██╔══██║   ██║   ╚════██║\n");
-    printf("██████╔╝██║  ██║██║╚██████╔╝██║  ██║   ██║   ███████║\n");
-    printf("╚═════╝ ╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝\n");
-    printf("\033[0m\n");
-}
-
-/* AI-generated ASCII art patterns */
-const char *ai_patterns[] = {
+static const char *ai_patterns[] = {
     "███████╗██╗   ██╗██████╗ ███████╗██████╗ ███████╗███████╗████████╗ ██████╗██╗  ██╗\n"
     "██╔════╝██║   ██║██╔══██╗██╔════╝██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔════╝██║  ██║\n"
     "███████╗██║   ██║██████╔╝█████╗  ██████╔╝█████╗  █████╗     ██║   ██║     ███████║\n"
@@ -128,7 +80,7 @@ const char *ai_patterns[] = {
     "╚══════╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝╚═╝     ╚══════╝   ╚═╝    ╚═════╝╚═╝  ╚═╝",
 
     "╔══════════════════════════════════════════════════════════════════════════════╗\n"
-    "║                           🌟 BrightS System 🌟                            ║\n"
+    "║                           BrightS System                                   ║\n"
     "║                                                                            ║\n"
     "║                  ███████╗██╗   ██╗██████╗ ███████╗██████╗                 ║\n"
     "║                  ██╔════╝██║   ██║██╔══██╗██╔════╝██╔══██╗                ║\n"
@@ -137,7 +89,7 @@ const char *ai_patterns[] = {
     "║                  ███████║╚██████╔╝██║     ███████╗██║  ██║                ║\n"
     "║                  ╚══════╝ ╚═════╝ ╚═╝     ╚══════╝╚═╝  ╚═╝                ║\n"
     "║                                                                            ║\n"
-    "║                        ✨ Fast, Beautiful, Informative ✨                ║\n"
+    "║                        Fast, Beautiful, Informative                       ║\n"
     "╚══════════════════════════════════════════════════════════════════════════════╝",
 
     "    ____        __           ____  ____ \n"
@@ -146,89 +98,251 @@ const char *ai_patterns[] = {
     " / /_/ / /_/ / /_/ /_/ /  / ____/ /   \n"
     " \\____/\\____/\\__/\\____/  /_/   /___/   \n"
     "                                      \n"
-    "   BrightS SuperFetch v" VERSION "    \n",
-
-    "🐧 BrightS Linux 🐧\n"
-    "━━━━━━━━━━━━━━━━━━━━━\n"
-    "  ████████\n"
-    "  ██    ██\n"
-    "  ██    ██\n"
-    "  ██    ██\n"
-    "  ████████\n"
-    "━━━━━━━━━━━━━━━━━━━━━"
+    "   BrightS SuperFetch v" VERSION "    \n"
 };
 
 #define AI_PATTERNS_COUNT (sizeof(ai_patterns) / sizeof(ai_patterns[0]))
 
-/* Generate AI-powered ASCII art */
+void print_os_info() {
+    print_field("OS", "BrightS Linux");
+}
+
+void print_kernel_info() {
+    print_field("Kernel", "BrightS Kernel 0.1.2.2");
+}
+
+void print_uptime() {
+    char buf[64];
+    snprintf(buf, sizeof(buf), "%d days, %d hours, %d minutes", 1, 2, 30);
+    print_field("Uptime", buf);
+}
+
+void print_memory() {
+    char buf[64];
+    snprintf(buf, sizeof(buf), "%d MB / %d MB", 512, 1024);
+    print_field("Memory", buf);
+}
+
+void print_cpu() {
+    print_field("CPU", "BrightS CPU @ 2.0GHz");
+}
+
+void print_disk() {
+    char buf[64];
+    snprintf(buf, sizeof(buf), "%d GB / %d GB", 10, 50);
+    print_field("Disk", buf);
+}
+
+void print_packages() {
+    print_field("Packages", "Unknown (bspm)");
+}
+
+void print_shell() {
+    char *shell = getenv("SHELL");
+    if (shell) {
+        char *base = strrchr(shell, '/');
+        print_field("Shell", base ? base + 1 : shell);
+    } else {
+        print_field("Shell", "BrightS Shell");
+    }
+}
+
+void print_resolution() {
+    print_field("Resolution", "1920x1080");
+}
+
+void print_de() {
+    print_field("DE", "BrightS Desktop");
+}
+
+void print_wm() {
+    print_field("WM", "BrightS Window Manager");
+}
+
+void print_terminal() {
+    print_field("Terminal", "BrightS Terminal");
+}
+
+void print_load() {
+    char buf[64];
+    snprintf(buf, sizeof(buf), "%.2f, %.2f, %.2f", 0.15, 0.12, 0.08);
+    print_field("Load", buf);
+}
+
+void print_swap() {
+    print_field("Swap", "N/A");
+}
+
+void print_battery() {
+    print_field("Battery", "N/A");
+}
+
+void print_locale() {
+    char *lc = getenv("LANG");
+    print_field("Locale", lc ? lc : "en_US.UTF-8");
+}
+
+void print_hostname() {
+    char hostname[64] = "bright-pc";
+    #ifdef __linux__
+    gethostname(hostname, sizeof(hostname));
+    #endif
+    print_field("Host", hostname);
+}
+
+void print_colors() {
+    printf("%sColors:%s ", C_BOLD, C_RESET);
+    for (int i = 0; i < 8; i++) {
+        if (no_color) printf("■   ");
+        else printf("\033[4%dm   ", i);
+    }
+    printf("%s\n", C_RESET);
+    printf("         ");
+    for (int i = 8; i < 16; i++) {
+        if (no_color) printf("■   ");
+        else printf("\033[4%dm   ", i);
+    }
+    printf("%s\n", C_RESET);
+}
+
+void print_ascii() {
+    if (no_color) {
+        printf("BrightS System\n");
+        printf("==============\n\n");
+    } else {
+        printf("\033[1;34m");
+        printf("██████╗ ██████╗ ██╗ ██████╗ ██╗  ██╗████████╗███████╗\n");
+        printf("██╔══██╗██╔══██╗██║██╔════╝ ██║  ██║╚══██╔══╝██╔════╝\n");
+        printf("██████╔╝██████╔╝██║██║  ███╗███████║   ██║   ███████╗\n");
+        printf("██╔══██╗██╔══██╗██║██║   ██║██╔══██║   ██║   ╚════██║\n");
+        printf("██████╔╝██║  ██║██║╚██████╔╝██║  ██║   ██║   ███████║\n");
+        printf("╚═════╝ ╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝\n");
+        printf("\033[0m\n");
+    }
+}
+
 void generate_ai_ascii() {
-    /* Seed random number generator */
-    srand(time(NULL));
-
-    /* Select random pattern */
+    srand((unsigned int)time(NULL));
     int pattern_idx = rand() % AI_PATTERNS_COUNT;
-
-    printf("\033[1;36m");  /* Cyan color */
-    printf("%s", ai_patterns[pattern_idx]);
-    printf("\033[0m\n");   /* Reset color */
+    
+    if (no_color) {
+        printf("BrightS System\n");
+    } else {
+        printf("\033[1;36m%s\033[0m\n", ai_patterns[pattern_idx]);
+    }
 }
 
 void print_help() {
     printf("SuperFetch v%s - System Information Tool\n\n", VERSION);
     printf("Usage: superfetch [OPTIONS]\n\n");
     printf("Options:\n");
-    printf("  --help, -h          Show this help message\n");
-    printf("  --version, -v       Show version information\n");
-    printf("  --no-color          Disable colored output\n");
-    printf("  --ascii PATH        Use custom ASCII art file\n");
-    printf("  --ai-ascii          Generate AI-powered ASCII art\n");
-    printf("  --theme THEME       Use specific theme\n");
-    printf("\nAvailable modules:\n");
-    for (Module *mod = modules; mod->name; mod++) {
-        printf("  %-10s %s\n", mod->name, mod->display_name);
-    }
-    printf("\n");
+    printf("  -h, --help          Show this help message\n");
+    printf("  -v, --version       Show version information\n");
+    printf("  -n, --no-color      Disable colored output\n");
+    printf("  -a, --ascii PATH    Use custom ASCII art file\n");
+    printf("  --ai-ascii          Generate random ASCII art\n");
+    printf("  -l, --list          List available modules\n");
+    printf("\nExamples:\n");
+    printf("  superfetch          Display system info\n");
+    printf("  superfetch -n       Display without colors\n");
+    printf("  superfetch --ai-ascii   Use random logo\n");
 }
 
 void print_title() {
-    printf("\033[1;35m%s@bright-pc\033[0m\n", getenv("USER") ?: "user");
+    char *user = getenv("USER");
+    char hostname[64] = "bright-pc";
+    
+    #ifdef __linux__
+    gethostname(hostname, sizeof(hostname));
+    #endif
+    
+    if (no_color) {
+        printf("%s@%s\n", user ? user : "user", hostname);
+    } else {
+        printf("\033[1;35m%s@%s\033[0m\n", user ? user : "user", hostname);
+    }
 }
 
 void print_separator() {
-    printf("\033[1;34m─────────────\033[0m\n");
+    if (no_color) {
+        printf("-------------\n");
+    } else {
+        printf("\033[1;34m-------------\033[0m\n");
+    }
 }
 
 void print_break() {
     printf("\n");
 }
 
+static void print_custom_ascii(const char *path) {
+    FILE *f = fopen(path, "r");
+    if (!f) {
+        fprintf(stderr, "Error: Cannot open %s\n", path);
+        return;
+    }
+    char line[512];
+    while (fgets(line, sizeof(line), f)) {
+        fputs(line, stdout);
+    }
+    fclose(f);
+}
+
+static void list_modules(void) {
+    printf("Available modules:\n");
+    for (Module *mod = modules; mod->name; mod++) {
+        printf("  %-12s %s\n", mod->name, mod->display_name);
+    }
+}
+
 int main(int argc, char *argv[]) {
     int use_ai_ascii = 0;
+    const char *custom_ascii = NULL;
+    int show_version = 0;
+    int show_help = 0;
+    int list_modules_flag = 0;
 
-    // Parse command line arguments
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
-            print_help();
-            return 0;
+            show_help = 1;
         } else if (strcmp(argv[i], "--version") == 0 || strcmp(argv[i], "-v") == 0) {
-            printf("SuperFetch v%s\n", VERSION);
-            return 0;
+            show_version = 1;
+        } else if (strcmp(argv[i], "--no-color") == 0 || strcmp(argv[i], "-n") == 0) {
+            no_color = 1;
         } else if (strcmp(argv[i], "--ai-ascii") == 0) {
             use_ai_ascii = 1;
+        } else if (strcmp(argv[i], "--ascii") == 0 || strcmp(argv[i], "-a") == 0) {
+            if (i + 1 < argc) custom_ascii = argv[++i];
+        } else if (strcmp(argv[i], "--list") == 0 || strcmp(argv[i], "-l") == 0) {
+            list_modules_flag = 1;
         }
     }
 
-    // Print ASCII art
-    if (use_ai_ascii) {
+    if (show_help) {
+        print_help();
+        return 0;
+    }
+
+    if (show_version) {
+        printf("SuperFetch v%s\n", VERSION);
+        return 0;
+    }
+
+    if (list_modules_flag) {
+        list_modules();
+        return 0;
+    }
+
+    if (custom_ascii) {
+        print_custom_ascii(custom_ascii);
+    } else if (use_ai_ascii) {
         generate_ai_ascii();
     } else {
         print_ascii();
     }
 
-    // Print separator
     printf("\n");
 
-    // Print system information modules
     for (Module *mod = modules; mod->name; mod++) {
         if (mod->func) {
             mod->func();
@@ -238,6 +352,8 @@ int main(int argc, char *argv[]) {
             print_separator();
         } else if (strcmp(mod->name, "break") == 0) {
             print_break();
+        } else if (strcmp(mod->name, "colors") == 0) {
+            print_colors();
         }
     }
 
